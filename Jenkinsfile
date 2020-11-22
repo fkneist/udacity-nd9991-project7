@@ -2,7 +2,9 @@ pipeline {
 
     environment {
         registry = "fkneist/udacity-project7"
-        registryCredential = 'dockerhub_id'
+        registryCredentials = 'dockerhub_id'
+        awsCredentials = 'aws_credentials_id'
+        awsRegion = 'us-west-2'
         dockerImage = ''
     }
     agent any
@@ -21,9 +23,19 @@ pipeline {
         stage('Push image to Docker Hub') {
             steps{
                 script {
-                    docker.withRegistry( '', registryCredential ) {
+                    docker.withRegistry( '', registryCredentials ) {
                     dockerImage.push()
                     }
+                }
+            }
+        }
+
+        stage('Create kubernetes configuration') {
+            steps {
+                withAWS(region: awsRegion, credentials: awsCredentials) {
+                sh '''
+                        aws eks --region us-west-2 update-kubeconfig --name project7
+                    '''
                 }
             }
         }
@@ -33,5 +45,7 @@ pipeline {
                 sh "docker rmi $registry:latest"
             }
         }
+
+        
     }
 }
