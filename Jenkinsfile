@@ -44,13 +44,13 @@ pipeline {
             steps {
                 echo 'Deploying to EKS cluster'
                 withAWS(region: 'us-west-2', credentials: awsCredentials) {
-                sh 'aws eks --region us-west-2 update-kubeconfig --name project7'
-                withCredentials([string(credentialsId: 'aws_account_id', variable: 'AWS_ACCOUNT_ID')]) { 
-                    sh "kubectl config use-context arn:aws:eks:us-west-2:${AWS_ACCOUNT_ID}:cluster/project7"
-                }
-                sh 'kubectl apply -f deployment.yml'
-                sh 'kubectl get pods'
-                sh 'kubectl get services'
+                    sh 'aws eks --region us-west-2 update-kubeconfig --name project7'
+                    withCredentials([string(credentialsId: 'aws_account_id', variable: 'AWS_ACCOUNT_ID')]) { 
+                        sh "kubectl config use-context arn:aws:eks:us-west-2:${AWS_ACCOUNT_ID}:cluster/project7"
+                    }
+                    sh 'kubectl apply -f deployment.yml'
+                    sh 'kubectl get pods'
+                    sh 'kubectl get services'
                 }
 
             }
