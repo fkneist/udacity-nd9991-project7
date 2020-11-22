@@ -15,7 +15,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: project7
+  name: project7-deployment
 
 spec:
   replicas: 1
@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: project7
-          image: fkneist/udacity-project7:latest
+          image: fkneist/udacity-project7
           imagePullPolicy: 'Always'
           ports:
             - containerPort: 8080
