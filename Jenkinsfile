@@ -48,8 +48,8 @@ pipeline {
                     withCredentials([string(credentialsId: 'aws_account_id', variable: 'AWS_ACCOUNT_ID')]) { 
                         sh "kubectl config use-context arn:aws:eks:us-west-2:${AWS_ACCOUNT_ID}:cluster/project7"
                     }
-                    sh 'kubectl apply -f project7-deployment.yml --force=true'
                     sh "kubectl set image deployment/project7-deployment project7=fkneist/udacity-project7:${currentBuild.number} --record"
+                    sh 'kubectl apply -f project7-deployment.yml --force=true'
                     sh 'kubectl get pods'
                     sh 'kubectl get services'
                 }
