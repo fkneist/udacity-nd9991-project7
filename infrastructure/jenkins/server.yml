@@ -1,0 +1,140 @@
+Description: >
+  Udacity nanodegree: DevOps Engineer
+  Student: Florian Kneist
+  Project: #7 (capstone)
+
+Parameters:
+
+  EnvPrefix:
+    Description: Prefix for resource names
+    Type: String
+
+  InstanceType:
+    Description: TODO
+    Default: t3.micro
+    Type: String
+    
+  InstanceAMI:
+    Type: String
+    Default: ami-003634241a8fcdec0 # Ubuntu 18.04
+    Description: TODO
+
+  SSHLocation:
+    Description: TODO
+    Default: 0.0.0.0/0
+    Type: String
+
+  KeyName:
+    Description: TODO
+    Type: AWS::EC2::KeyPair::KeyName
+    Default: project7-key-pair
+
+Resources:
+
+  HostSecGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: TODO
+      VpcId:
+        Fn::ImportValue:
+          !Sub "${EnvPrefix}-VPCID"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: !Ref SSHLocation
+        - IpProtocol: tcp
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+      - IpProtocol: tcp
+        FromPort: 0
+        ToPort: 65535
+        CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: name
+          Value: !Sub ${EnvPrefix} SecGroup Jenkins Host
+
+  EIPHost:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain:
+        Fn::ImportValue:
+          !Sub "${EnvPrefix}-VPCID"
+
+  InstanceHostEC2:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref InstanceAMI
+      KeyName: !Ref KeyName
+      IamInstanceProfile:
+        Fn::ImportValue:
+          !Sub "${EnvPrefix}-InstanceProfile"
+      SecurityGroupIds:
+        - !Ref HostSecGroup
+      InstanceType: !Ref InstanceType
+      SubnetId:
+        Fn::ImportValue:
+          !Sub ${EnvPrefix}-PUBLIC1-SN
+      BlockDeviceMappings:
+      - DeviceName: "/dev/sdk"
+        Ebs:
+          VolumeSize: '10'
+      UserData:
+        Fn::Base64: 
+          Fn::Sub:
+            - |
+              #!/bin/bash
+              
+              apt-get update
+              apt-get install -y apt-transport-https ca-certificates curl software-properties-common unzip default-jdk python3-dev python3-venv build-essential
+              wget https://github.com/hadolint/hadolint/releases/download/v1.18.0/hadolint-Linux-x86_64
+              mv hadolint-Linux-x86_64 /usr/bin/hadolint
+              chmod 775 /usr/bin/hadolint
+
+              curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+              curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+
+              add-apt-repository \
+                "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+                $(lsb_release -cs) \
+                stable"
+
+              apt-get update
+              apt-get install -y docker-ce docker-ce-cli containerd.io
+              usermod -aG docker ubuntu
+              systemctl service docker start
+
+              sudo apt-get update && sudo apt-get install -y apt-transport-https gnupg2
+              curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+              echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+              sudo apt-get update
+              sudo apt-get install -y kubectl
+
+              echo "Installing docker-compose"
+              curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+              sudo chmod +x /usr/local/bin/docker-compose
+              
+              wget -q -O - https://pkg.Jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
+              sh -c "echo 'deb https://pkg.jenkins.io/debian-stable binary/' > /etc/apt/sources.list.d/jenkins.list"
+              apt-get update
+              apt-get install -y jenkins
+
+              usermod -aG docker jenkins
+
+              echo "Installing aws-cli"
+              curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+              unzip -qq awscliv2.zip
+              ./aws/install
+
+            - EIPAllocation: !GetAtt EIPHost.AllocationId
+
+Outputs:
+
+  HostPublicIPAddress:
+    Description: TODO
+    Value: !Ref EIPHost
+    Export:
+      Name: !Sub ${EnvPrefix}-PUBLIC-IP
+

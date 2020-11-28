@@ -26,5 +26,16 @@
 * `scripts/delete-stack.sh <stack_name> <your_aws_profile_name>`
 * e.g. `scripts/delete-stack.sh project7-iam-stack fkneist-private`
 
+### Create Jenkins Server
+
+* `scripts/create-stack.sh project7-jenkins-stack <server_yaml> <server_json> <your_aws_profile_name>`
+* e.g. `scripts/create-stack.sh project7-jenkins-stack infrastructure/jenkins/server.yml infrastructure/jenkins/server.json fkneist-private`
+
+### Delete Jenkins Server
+
+* `scripts/delete-stack.sh <server_name> <server_yaml> <server_json> <your_aws_profile_name>`
+* e.g. `scripts/delete-stack.sh project7-jenkins-stack fkneist-private`
+
+
 ## Start the Container locally
 * `docker run --name p7-ngingx-container -p 8080:80 project7-nginx`
