@@ -16,5 +16,15 @@
 * `scripts/delete-stack.sh <stack_name> <your_aws_profile_name>`
 * e.g. `scripts/delete-stack.sh project7-network-stack fkneist-private`
 
+### Create IAM (Jenkins)
+
+* `scripts/create-stack.sh <stack_name> <iam_yaml> <iam_json> <your_aws_profile_name>`
+* e.g. `scripts/create-stack.sh project7-iam-stack infrastructure/jenkins/iam.yml infrastructure/jenkins/iam.json fkneist-private`
+
+### Delete IAM (Jenkins)
+
+* `scripts/delete-stack.sh <stack_name> <your_aws_profile_name>`
+* e.g. `scripts/delete-stack.sh project7-iam-stack fkneist-private`
+
 ## Start the Container locally
 * `docker run --name p7-ngingx-container -p 8080:80 project7-nginx`
