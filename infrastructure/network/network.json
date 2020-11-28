@@ -1,0 +1,11 @@
+[
+  {
+    "ParameterKey": "EnvPrefix",
+    "ParameterValue": "UdacityProject7"
+  },
+
+  {
+    "ParameterKey": "VpcCIDRBlock",
+    "ParameterValue": "10.0.0.0/16"
+  }
+]
