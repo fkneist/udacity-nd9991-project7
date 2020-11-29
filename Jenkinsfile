@@ -30,15 +30,15 @@ pipeline {
             }
         }
 
-        stage('Create kubernetes configuration') {
-            steps {
-                withAWS(region: awsRegion, credentials: awsCredentials) {
-                sh '''
-                        aws eks --region us-west-2 update-kubeconfig --name project7
-                    '''
-                }
-            }
-        }
+        // stage('Create kubernetes configuration') {
+        //     steps {
+        //         withAWS(region: awsRegion, credentials: awsCredentials) {
+        //         sh '''
+        //                 aws eks --region us-west-2 update-kubeconfig --name project7
+        //             '''
+        //         }
+        //     }
+        // }
 
         stage('Deploy to EKS') {
             // steps {
