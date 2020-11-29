@@ -3,6 +3,7 @@
 ## Design Decisions
 * Rolling deployment or blue/green deployment: rolling deployment
 * AWS Kubernetes as a Service, or build your own Kubernetes cluster: AWS Kubernetes as a Service
+* What to deploy: simple nginx hosted site with custom HTML
 
 ## Deploy Instructions
 
@@ -98,8 +99,9 @@ scripts/delete-stack.sh \
 * Add Docker Hub credentials to Jenkins
 * Add AWS credentials to Jenkins
 
+## Local Development
 
-## Start the Container locally
+### Start Container
 
 ```bash
 docker run \
@@ -107,3 +109,29 @@ docker run \
   -p 8080:80 \
   project7-nginx
 ```
+
+## Screenshots
+
+### Linting Failed
+
+![Jenkins: stage linting failed](screenshots/01-jenkins-linting.png)
+
+### Linting Fixed
+
+![Jenkins: stage linting fixed](screenshots/02-jenkins-linting-fixed.png)
+
+### Deployment 1/2
+
+![Jenkins pipeline](screenshots/03-pipeline.png)
+
+### Deployed project 1/2
+
+![Deployed project in browser](screenshots/04-online-version.png)
+
+### Deployment 2/2
+
+![Jenkins pipeline](screenshots/05-pipeline.png)
+
+### Deployed project 2/2
+
+![Deployed project in browser](screenshots/06-online-version.png)
