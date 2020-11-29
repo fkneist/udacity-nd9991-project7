@@ -31,8 +31,8 @@ pipeline {
             steps{
                 script {
                     docker.withRegistry('', registryCredentials) {
-                        app.push("${env.GIT_COMMIT}")
-                        app.push("latest")
+                        dockerImage.push("${env.GIT_COMMIT}")
+                        dockerImage.push("latest")
                     }
                 }
             }
