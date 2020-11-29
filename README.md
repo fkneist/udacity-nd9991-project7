@@ -139,3 +139,7 @@ docker run \
 ### Deployed project 2/2
 
 ![Deployed project in browser](screenshots/06-online-version.png)
+
+### AWS EC2 Instances
+
+![EC2 instances](screenshots/07-ec2.png)
