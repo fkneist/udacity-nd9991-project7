@@ -30,8 +30,9 @@ pipeline {
         stage('Push image to Docker Hub') {
             steps{
                 script {
-                    docker.withRegistry( '', registryCredentials ) {
-                    dockerImage.push()
+                    docker.withRegistry('', dockerhubCredentials) {
+                        app.push("${env.GIT_COMMIT}")
+                        app.push("latest")
                     }
                 }
             }
