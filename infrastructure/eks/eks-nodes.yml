@@ -1,0 +1,31 @@
+Description: >
+  Udacity nanodegree: DevOps Engineer
+  Student: Florian Kneist
+  Project: #7 (capstone)
+
+Parameters:
+
+  EnvPrefix:
+    Description: TODO
+    Type: String
+
+Resources:
+  EKSNodegroup:
+    Type: 'AWS::EKS::Nodegroup'
+    Properties:
+      ClusterName: !Sub ${EnvPrefix}-EKS-CLUSTER
+      NodeRole:
+        Fn::ImportValue:
+          !Sub ${EnvPrefix}-EKSNodegroupRole
+      ScalingConfig:
+        MinSize: 1
+        DesiredSize: 1
+        MaxSize: 3
+      Labels:
+        Project: !Sub ${EnvPrefix}-EKS-CLUSTER
+        NodeType: Default
+      Subnets:
+        Fn::Split:
+          - ","
+          - Fn::ImportValue:
+              !Sub ${EnvPrefix}-PUBLIC-NETS

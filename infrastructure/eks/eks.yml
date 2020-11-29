@@ -1,0 +1,28 @@
+Description: >
+  Udacity nanodegree: DevOps Engineer
+  Student: Florian Kneist
+  Project: #7 (capstone)
+
+Parameters:
+
+  EnvPrefix:
+    Description: TODO
+    Type: String
+
+Resources:
+  Cluster:
+    Type: 'AWS::EKS::Cluster'
+    Properties:
+      Name: !Sub ${EnvPrefix}-EKS-CLUSTER
+      RoleArn:
+        Fn::ImportValue:
+          !Sub ${EnvPrefix}-ClusterRole
+      ResourcesVpcConfig:
+        SecurityGroupIds:
+          - Fn::ImportValue:
+              !Sub ${EnvPrefix}-EKS-SG
+        SubnetIds:
+          Fn::Split:
+            - ","
+            - Fn::ImportValue:
+                !Sub ${EnvPrefix}-PUBLIC-NETS
