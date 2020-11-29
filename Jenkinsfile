@@ -9,6 +9,12 @@ pipeline {
     }
     agent any
     stages {
+
+        stage('Lint with hadolint') {
+            steps {
+                sh 'hadolint Dockerfile'
+            }
+        }
   
         stage('Build Docker image') {
             steps {
