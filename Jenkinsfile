@@ -21,7 +21,7 @@ pipeline {
                 echo 'Building the Docker container...'
                 script {
                     // dockerImage = docker.build("${registry}:${currentBuild.number}", "-f Dockerfile .")
-                    dockerImage = docker.build("${registry}:latest", "-f Dockerfile .")
+                    dockerImage = docker.build("${registry}")
                 }
             }
         }
