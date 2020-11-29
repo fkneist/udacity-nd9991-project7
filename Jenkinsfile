@@ -55,7 +55,6 @@ pipeline {
 
         stage('Clean up') {
             steps{
-                // sh "docker rmi $registry:${currentBuild.number}"
                 sh "docker rmi $registry:latest"
             }
         }   
