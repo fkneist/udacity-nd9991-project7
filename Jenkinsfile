@@ -44,6 +44,7 @@ pipeline {
                         sh 'echo "Setup Kubernetes Cluster"'
                         sh "aws eks --region us-west-2 update-kubeconfig --name UdacityProject7-EKS-CLUSTER"
                         sh 'echo "Deploy to Kubernetes"'
+                        sh 'sed -ie "s/THIS_STRING_IS_REPLACED_DURING_BUILD/$(date)/g" kubernetes/deployment.yml' // Trick from here: https://stackoverflow.com/a/51835397
                         sh "kubectl apply -f kubernetes/deployment.yml"
                         sh 'echo "Deployment:"'
                         sh "kubectl get svc"

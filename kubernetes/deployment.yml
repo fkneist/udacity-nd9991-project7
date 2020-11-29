@@ -27,6 +27,9 @@ spec:
         imagePullPolicy: "Always"
         ports:
         - containerPort: 80
+        env:
+        - name: PLEASE_REDEPLOY
+          value: 'THIS_STRING_IS_REPLACED_DURING_BUILD'
 ---
 apiVersion: v1
 kind: Service
