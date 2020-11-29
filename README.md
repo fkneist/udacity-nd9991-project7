@@ -1,5 +1,9 @@
 # Udacity Cloud DevOps Engineer - Project 7
 
+## Live Demo
+
+http://a87a17068ab9f477ca8245f8b8ba0ab3-736430264.us-west-2.elb.amazonaws.com/ (will be deleted after project is rated)
+
 ## Design Decisions
 * Rolling deployment or blue/green deployment: rolling deployment
 * AWS Kubernetes as a Service, or build your own Kubernetes cluster: AWS Kubernetes as a Service
