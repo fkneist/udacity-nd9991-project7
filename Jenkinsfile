@@ -20,7 +20,8 @@ pipeline {
             steps {
                 echo 'Building the Docker container...'
                 script {
-                    dockerImage = docker.build("${registry}:${currentBuild.number}", "-f Dockerfile .")
+                    // dockerImage = docker.build("${registry}:${currentBuild.number}", "-f Dockerfile .")
+                    dockerImage = docker.build("${registry}:latest", "-f Dockerfile .")
                 }
             }
         }
@@ -53,7 +54,8 @@ pipeline {
 
         stage('Clean up') {
             steps{
-                sh "docker rmi $registry:${currentBuild.number}"
+                // sh "docker rmi $registry:${currentBuild.number}"
+                sh "docker rmi $registry:latest"
             }
         }   
     }
